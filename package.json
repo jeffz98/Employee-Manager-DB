@@ -2,7 +2,7 @@
   "name": "employee-manager-db",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/jeffz98/Employee-Manager-DB#readme",
   "dependencies": {
+    "console.table": "^0.10.0",
     "dotenv": "^16.0.1",
-    "inquirer": "^8.2.4"
+    "inquirer": "^8.2.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3"
   }
 }
