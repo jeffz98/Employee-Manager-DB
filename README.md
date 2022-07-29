@@ -34,9 +34,8 @@ Run `npm start` to start the app in the command line.
 
 Follow the prompts in the application to use the content management system.
 
-![installation-preview](./images/install_preview.gif)
-
-Walkthrough video [video]
+![installation-preview](./images/install_preview.png)
+Walthrough Video: [Here](https://drive.google.com/file/d/1SpSDg5x-_2od2fX4HxYiDquy12aEJd-f/view?usp=sharing)
 
 ## Credits
 This application was built with the support of the resources and staff of the UCB Full Stack Full Time Coding Bootcamp Summer 2022. 
@@ -45,8 +44,6 @@ This application was built with the support of the resources and staff of the UC
 
 
 ## License
-<details>
-  <summary><b>MIT License</b></summary>
 
 ```
 MIT License
