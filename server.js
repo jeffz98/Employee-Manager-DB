@@ -305,6 +305,7 @@ function addEmployeeWManager(answers, roleId) {
   } );
 }
 
+// deletes a specific department from the table
 function deleteDepartment() {
   const question = [
     {
@@ -325,6 +326,7 @@ function deleteDepartment() {
   });
 }
 
+// gets the names of departments and pushes them into the department arrays
 function getDepartmentNames() {
   departments = [];
   db.query("SELECT * FROM department", function (err, results) {
@@ -337,6 +339,7 @@ function getDepartmentNames() {
   return departments;
 }
 
+// inserts a user filled role into role table
  function addRole () {
   // getDepartmentNames()
   const roleQuestions = [{
@@ -380,6 +383,7 @@ function getDepartmentNames() {
   
 }
 
+// deletes a role from role table
 function deleteRole() {
  
   const question = [
@@ -402,6 +406,7 @@ function deleteRole() {
   });
 }
 
+// initalize variables and run the prompter
 function init() {
   roles = getRoles();
   employees = getEmployees();
