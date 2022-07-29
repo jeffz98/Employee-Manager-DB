@@ -82,6 +82,8 @@ var employees = ["None"];
           updateEmployeeRole();
           // chooseOption();
           break;
+        default:
+          return "";
         // case "View Employees By Manager":
         //   connection.query(
         //     `SELECT CONCAT(employee.first_name, " ", employee.last_name) AS name,  CONCAT(manager.first_name, " ", manager.last_name) as manager FROM employee LEFT JOIN employee manager on manager.id=employee.manager_id`,
@@ -92,8 +94,7 @@ var employees = ["None"];
         //   );
         //   chooseFunction();
         //   break;
-        default:
-          return "";
+        
       }
 
         // if (functionChoice.choice === 'View All Departments') {
@@ -215,6 +216,17 @@ function addEmployee() {
     chooseFunction();
     // break;
   });
+}
+
+function getRoles() {
+  db.query("SELECT * FROM role", function (err, results) {
+    if (results) {
+      results.forEach(function (role) {
+        roles.push(role.title);
+      });
+    }
+  });
+  return roles;
 }
 
 function getEmployees() {
