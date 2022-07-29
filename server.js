@@ -112,7 +112,15 @@ var id;
           );
           chooseFunction();
           break;
-        
+          case "Total Budget By Department":
+            totalBudgetDept();
+            break;
+          case "Delete Department":
+            deleteDepartment();
+            break;
+          case "Delete Role":
+            deleteRole();
+            break;
       }
     }     
     );
@@ -159,6 +167,34 @@ function updateEmployeeRole() {
             );
           }
         );
+      }
+    );
+    chooseFunction();
+  });
+}
+
+function totalBudgetDept() {
+  console.log("departments", departments);
+  const question = [
+    {
+      name: "department",
+      message: "Which department do you want view a total budget for?",
+      type: "list",
+      choices: departments,
+    },
+  ];
+  inquirer.prompt(question).then((answer) => {
+    console.log(answer);
+    db.query(
+      `SELECT department.name as department, SUM(role.salary) as total_salary FROM role INNER JOIN department ON department_id=department.id GROUP BY department.name;`,
+      function (err, results) {
+        console.log('\n');
+        console.table(results);
+        console.log('\n');
+        console.log('\n');
+        console.log('\n');
+        console.log('\n');
+        
       }
     );
     chooseFunction();
@@ -261,6 +297,7 @@ function addEmployeeWManager(answers, roleId) {
 }
 
 function getDepartmentNames() {
+  departments = [];
   db.query("SELECT * FROM department", function (err, results) {
     if (results) {
       results.forEach(function (department) {
