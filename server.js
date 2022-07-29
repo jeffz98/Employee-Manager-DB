@@ -4,9 +4,6 @@ require('console.table');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
-// const mysqlPromise = require("mysql2/promise");
-
-
 
 const db = mysql.createConnection({
       host: process.env.host,
@@ -16,8 +13,6 @@ const db = mysql.createConnection({
   },
   console.log(`Connected to the employees_db database.`)
 );
-
-
 
 
 var departments = [];
