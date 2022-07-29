@@ -23,6 +23,7 @@ const db = mysql.createConnection({
 var departments = [];
 var roles = [];
 var employees = ["None"];
+var id;
 
  function chooseFunction() {
   roles = getRoles();
@@ -32,7 +33,7 @@ var employees = ["None"];
     type: 'list',
     message: 'What would you like to do?',
     name: 'choice',
-    choices: ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role', 'Quit'],
+    choices: ['View All Departments', 'View All Roles', 'View All Employees', 'View Employees By Manager', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee Role', 'Total Budget By Department', 'Quit'],
   };
 
      inquirer.prompt(choiceQuestions
@@ -42,17 +43,29 @@ var employees = ["None"];
         case "View All Departments":
           db.query(`SELECT * FROM department`, function (err, results) {
             console.log("\n");
+            
             console.table(results);
+            console.log("\n");
+            console.log("\n");
+            console.log("\n");
+            console.log("\n");
+            console.log("\n");
             console.log("\n");
           });
           chooseFunction();
           break;
         case "View All Employees":
           db.query(
-            `SELECT * FROM employee`,
+            `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(m.first_name, " ", m.last_name) as m FROM employee INNER JOIN role ON employee.role_id=role.id INNER JOIN department ON department.id=role.department_id LEFT JOIN employee m on m.id=employee.manager_id`,
             function (err, results) {
+             
               console.log("\n");
               console.table(results);
+              console.log("\n");
+              console.log("\n");
+              console.log("\n");
+              console.log("\n");
+              console.log("\n");
               console.log("\n");
             }
           );
@@ -60,71 +73,52 @@ var employees = ["None"];
           break;
         case "View All Roles":
           db.query(
-            `SELECT * FROM role`,
+            `SELECT role.id, role.title, department.name AS department, role.salary FROM role INNER JOIN department ON role.department_id=department.id`,
             function (err, results) {
               console.log("\n");
+              
               console.table(results);
+              console.log("\n");
+              console.log("\n");
+              console.log("\n");
+              console.log("\n");
+              console.log("\n");
+              console.log("\n");
               console.log("\n");
             }
           );
           chooseFunction();
           break;
-        case "Add Department":
+        case "Add a Department":
           addDepartment();
           break;
-        case "Add Employee":
+        case "Add an Employee":
           addEmployee();
           break;
-        case "Add Role":
+        case "Add a Role":
           addRole();
           break;
-        case "Update Employee Role":
+        case "Update an Employee Role":
           updateEmployeeRole();
           // chooseOption();
           break;
+        case "Quit":
+          quit();
+          break;
         default:
           return "";
-        // case "View Employees By Manager":
-        //   connection.query(
-        //     `SELECT CONCAT(employee.first_name, " ", employee.last_name) AS name,  CONCAT(manager.first_name, " ", manager.last_name) as manager FROM employee LEFT JOIN employee manager on manager.id=employee.manager_id`,
-        //     function (err, results) {
-        //       console.log("\n");
-        //       console.table(results);
-        //     }
-        //   );
-        //   chooseFunction();
-        //   break;
+        case "View Employees By Manager":
+          connection.query(
+            `SELECT CONCAT(employee.first_name, " ", employee.last_name) AS name,  CONCAT(manager.first_name, " ", manager.last_name) as manager FROM employee LEFT JOIN employee manager on manager.id=employee.manager_id`,
+            function (err, results) {
+              console.log("\n");
+              console.table(results);
+            }
+          );
+          chooseFunction();
+          break;
         
       }
-
-        // if (functionChoice.choice === 'View All Departments') {
-        //      db.query('SELECT * FROM department', function (err, results) {
-        //         console.table(results);
-        //       });
-        //       chooseFunction();
-
-        // } else if (functionChoice.choice === 'View All Roles') {
-        //    db.query('SELECT * FROM role', function (err, results) {
-        //       console.table(results);
-        //     });
-        //     chooseFunction();
-        // } else if (functionChoice.choice === 'View All Employees') {
-        //      db.query('SELECT * FROM employee', function (err, results) {
-        //         console.table(results);
-        //       });
-        //       chooseFunction();
-        // } else if (functionChoice.choice === 'Add a Department') {
-        //     addDepartment();
-        // } else if (functionChoice.choice === 'Add a Role') {
-        //     addRole();
-        // } else if (functionChoice.choice === 'Add an Employee') {
-        //   addEmployee();
-        // } else if (functionChoice.choice === ' Update an Employee Role') {
-        //   updateEmployeeRole();
-        // } else if (functionChoice.choice === 'Quit') {
-        //   console.log("Goodbye!~");
-        //   return;
-        // }
     }     
     );
 }
@@ -152,13 +146,13 @@ function updateEmployeeRole() {
       function (err, results) {
         console.log("\n");
         employeeId = results[0].id;
-        connection.query(
+        db.query(
           `SELECT id FROM role WHERE title="${answers.employee_role}"`,
           function (err, results) {
             console.log("\n");
-            console.log(results);
+            // console.log(results);
             id = results[0].id;
-            connection.query(
+            db.query(
               `UPDATE employee SET role_id='${id}' WHERE id='${employeeId}'`,
               function (err, results) {
                 console.log(
@@ -301,14 +295,28 @@ function getDepartmentNames() {
     type: 'list',
     message: 'Which department does this role belong to?',
     name: 'roleDepartment',
-    choices: getDepartmentNames()
+    choices: departments
   }
 ];
 
 
    inquirer.prompt(roleQuestions).then((roleInfo) => {
-    db.query(`INSERT INTO role (title, salary, department_id) VALUES ('${roleInfo.roleName}', '${roleInfo.roleSalary}', '${roleInfo.roleDepartment.id}');`, function (err, results) {
-    });
+    db.query(
+      `SELECT id FROM department WHERE name="${roleInfo.roleDepartment}"`,
+      function (err, results) {
+        console.log("\n");
+        // console.log(results);
+        id = results[0].id;
+        db.query(
+          `INSERT INTO role (title, salary, department_id) VALUES (${`"${roleInfo.roleName}",${roleInfo.roleSalary},${id}`})`,
+          function (err, results) {
+            console.log(`\n Added ${roleInfo.roleName} to the role table`);
+          }
+        );
+      }
+    );
+    // db.query(`INSERT INTO role (title, salary, department_id) VALUES ('${roleInfo.roleName}', '${roleInfo.roleSalary}', '${roleInfo.roleDepartment.id}');`, function (err, results) {
+    // });
     chooseFunction();
   } );
 

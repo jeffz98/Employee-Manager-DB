@@ -13,8 +13,8 @@ VALUES ('Engineer', 100000.00, 2),
        ("Comms guy", 70000.00, 5);
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ('Billy', 'Bob', 5, 1),
+VALUES ("Jerome", "Manages", 3, null),
+       ('Billy', 'Bob', 5, 1),
        ("I sell", 'things', 4, 1),
-       ("Jerome", "Manages", 3, null),
        ("I bust", "code", 2, 1),
-       ("I fix", "busted code", 1, 2);
+       ("I fix", "busted code", 1, 1);
