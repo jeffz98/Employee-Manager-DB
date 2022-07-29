@@ -371,7 +371,28 @@ function getDepartmentNames() {
 
 }
 
-// chooseFunction();
+function deleteRole() {
+ 
+  const question = [
+    { 
+      type: "list",
+      message: "Which role would you like to delete?",
+      name: "role",
+      choices: roles,
+    },
+  ];
+  inquirer.prompt(question).then((answers) => {
+    
+    connection.query(
+      `DELETE FROM role WHERE role.title="${answers.role}"`,
+      function (err, results) {
+        console.log(`${answers.role} deleted successfully!`);
+      }
+    );
+    chooseFunction();
+  });
+}
+
 function init() {
   roles = getRoles();
   employees = getEmployees();
