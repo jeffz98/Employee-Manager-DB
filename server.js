@@ -129,15 +129,15 @@ var id;
 function updateEmployeeRole() {
   const questions = [
     {
-      name: "employee_id",
-      message: "Which employee's role do you want to update?",
       type: "list",
+      message: "Which employee's role do you want to update?",
+      name: "employee_id",
       choices: employees,
     },
     {
-      name: "employee_role",
-      message: "Which role do you want to assign the selected employee?",
       type: "list",
+      message: "Which role do you want to assign the selected employee?",
+      name: "employee_role",
       choices: roles,
     },
   ];
@@ -177,9 +177,9 @@ function totalBudgetDept() {
   console.log("departments", departments);
   const question = [
     {
-      name: "department",
-      message: "Which department do you want view a total budget for?",
       type: "list",
+      message: "Which department do you want view a total budget for?",
+      name: "department",
       choices: departments,
     },
   ];
@@ -206,15 +206,15 @@ function addEmployee() {
     { name: "first_name", message: "What is the employee's first name?" },
     { name: "last_name", message: "What is the employee's last name?" },
     {
-      name: "role",
-      message: "What is the employee's role?",
       type: "list",
+      message: "What is the employee's role?",
+      name: "role",
       choices: roles,
     },
     {
-      name: "manager_id",
-      message: "Who is the employee's manager?",
       type: "list",
+      message: "Who is the employee's manager?",
+      name: "manager_id",
       choices: employees,
     },
   ];
@@ -294,6 +294,26 @@ function addEmployeeWManager(answers, roleId) {
     });
     chooseFunction();
   } );
+}
+
+function deleteDepartment() {
+  const question = [
+    {
+      type: "list",
+      message: "Which department would you like to delete?",
+      name: "department",
+      choices: departments,
+    },
+  ];
+  inquirer.prompt(question).then((answers) => {
+    db.query(
+      `DELETE FROM department WHERE department.name="${answers.department}"`,
+      function (err, results) {
+        console.log(`${answers.department} deleted successfully!`);
+      }
+    );
+    chooseFunction();
+  });
 }
 
 function getDepartmentNames() {
