@@ -5,7 +5,7 @@
 A CLI application to manage a company's employee database, using Node.js, Inquirer, and MySQL.
 
 ## Description 
-This application is a command line application content management system which allows the user to manage a database of company information including departments, roles, and employees. It is written in JavaScript and SQL and runs on Node.js in conjunction with MySQL Server. The Node package Inquirer is used to generate the CLI and the mysql2 package is used to communicate with a local MySQL server. The dotenv package is used to generate environmental variables.
+This application is a command line application content management system which allows the user to manage a database of company information including departments, roles, and employees. 
 
 ## Technologies Used
 
