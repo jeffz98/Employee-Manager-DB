@@ -17,10 +17,11 @@ const db = mysql.createConnection({
 
 var departments = [];
 var roles = [];
-var employees = ["None"];
+var employees = ["NA"];
+var employeeId;
 var id;
 
- function chooseFunction() {
+function chooseFunction() {
   roles = getRoles();
   employees = getEmployees();
   departments = getDepartmentNames();
@@ -98,12 +99,11 @@ var id;
           // chooseOption();
           break;
         case "Quit":
-          quit();
-          break;
+          process.exit(0);
         default:
           return "";
         case "View Employees By Manager":
-          connection.query(
+          db.query(
             `SELECT CONCAT(employee.first_name, " ", employee.last_name) AS name,  CONCAT(manager.first_name, " ", manager.last_name) as manager FROM employee LEFT JOIN employee manager on manager.id=employee.manager_id`,
             function (err, results) {
               console.log("\n");
@@ -224,7 +224,7 @@ function addEmployee() {
       function (err, results) {
         id = results[0].id;
         if (answers.manager_id === "None") {
-          connection.query(
+          db.query(
             `INSERT INTO employee (first_name, last_name, role_id) VALUES ("${answers.first_name}","${answers.last_name}","${id}")`,
             function (err, results) {
               console.log(
@@ -253,7 +253,7 @@ function getRoles() {
 }
 
 function getEmployees() {
-  employees = ["None"];
+  employees = ["NA"];
    db.query("SELECT * FROM employee", function (err, results) {
     if (results) {
       results.forEach(function (employee) {
@@ -273,7 +273,7 @@ function addEmployeeWManager(answers, roleId) {
     }" AND last_name="${answers.manager_id.split(" ")[1]}"`,
     function (err, results) {
       employeeId = results[0].id;
-      connection.query(
+      db.query(
         `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (${`"${answers.first_name}","${answers.last_name}",${roleId}, ${employeeId}`})`,
         function (err, results) {
           console.log(`\n Added ${answers.first_name} to the employee table`);
@@ -368,7 +368,7 @@ function getDepartmentNames() {
   
     chooseFunction();
   } );
-
+  
 }
 
 function deleteRole() {
@@ -383,7 +383,7 @@ function deleteRole() {
   ];
   inquirer.prompt(question).then((answers) => {
     
-    connection.query(
+    db.query(
       `DELETE FROM role WHERE role.title="${answers.role}"`,
       function (err, results) {
         console.log(`${answers.role} deleted successfully!`);
