@@ -206,9 +206,7 @@ function addEmployee() {
         }
       }
     );
-    // employees = getEmployees();
     chooseFunction();
-    // break;
   });
 }
 
@@ -315,8 +313,7 @@ function getDepartmentNames() {
         );
       }
     );
-    // db.query(`INSERT INTO role (title, salary, department_id) VALUES ('${roleInfo.roleName}', '${roleInfo.roleSalary}', '${roleInfo.roleDepartment.id}');`, function (err, results) {
-    // });
+  
     chooseFunction();
   } );
 
