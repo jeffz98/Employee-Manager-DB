@@ -223,7 +223,7 @@ function addEmployee() {
       `SELECT id FROM role WHERE title="${answers.role}"`,
       function (err, results) {
         id = results[0].id;
-        if (answers.manager_id === "None") {
+        if (answers.manager_id === "NA") {
           db.query(
             `INSERT INTO employee (first_name, last_name, role_id) VALUES ("${answers.first_name}","${answers.last_name}","${id}")`,
             function (err, results) {
