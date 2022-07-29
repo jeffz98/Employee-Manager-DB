@@ -1,10 +1,12 @@
+//import packages
+
 require('dotenv').config();
 require('console.table');
 
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
-
+//create a connection to mysql
 const db = mysql.createConnection({
       host: process.env.host,
       user: process.env.user,
@@ -14,13 +16,14 @@ const db = mysql.createConnection({
   console.log(`Connected to the employees_db database.`)
 );
 
-
+// initialize variables
 var departments = [];
 var roles = [];
 var employees = ["NA"];
 var employeeId;
 var id;
 
+// function prompting user to select a database functionality with inquirer
 function chooseFunction() {
   roles = getRoles();
   employees = getEmployees();
@@ -35,6 +38,7 @@ function chooseFunction() {
      inquirer.prompt(choiceQuestions
       
     ).then((functionChoice) => {
+      // switch case handling user choice
       switch (functionChoice.choice) {
         case "View All Departments":
           db.query(`SELECT * FROM department`, function (err, results) {
@@ -50,6 +54,7 @@ function chooseFunction() {
           });
           chooseFunction();
           break;
+          // selects required properties and joins matching criteria
         case "View All Employees":
           db.query(
             `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(m.first_name, " ", m.last_name) as m FROM employee INNER JOIN role ON employee.role_id=role.id INNER JOIN department ON department.id=role.department_id LEFT JOIN employee m on m.id=employee.manager_id`,
@@ -126,6 +131,7 @@ function chooseFunction() {
     );
 }
 
+// function to handle updating an employee's role
 function updateEmployeeRole() {
   const questions = [
     {
@@ -172,7 +178,7 @@ function updateEmployeeRole() {
     chooseFunction();
   });
 }
-
+// bonus function to give the total salary from a department
 function totalBudgetDept() {
   console.log("departments", departments);
   const question = [
@@ -241,6 +247,7 @@ function addEmployee() {
   });
 }
 
+// gets all roles from table
 function getRoles() {
   db.query("SELECT * FROM role", function (err, results) {
     if (results) {
@@ -252,6 +259,7 @@ function getRoles() {
   return roles;
 }
 
+// gets all employees from table, resets employees before getting
 function getEmployees() {
   employees = ["NA"];
    db.query("SELECT * FROM employee", function (err, results) {
@@ -283,6 +291,7 @@ function addEmployeeWManager(answers, roleId) {
   );
 }
 
+// inserts a department that user can create into table
  function addDepartment() {
   inquirer.prompt([{
     type: 'input',
